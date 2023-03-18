@@ -8,6 +8,7 @@
 
 .panel {
     background-color: aliceblue;
+    color:black;
     height: 100%;
     margin: 2px;
 }

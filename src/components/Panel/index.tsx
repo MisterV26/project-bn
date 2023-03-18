@@ -8,7 +8,12 @@ export const Panel = (props: IPanel) => {
 
   return (
     <div className="panel-container">
-        <div className="panel">panel</div>
+        <div className="panel">
+          id: {props.id} |
+          pos: [{props.position.x}, {props.position.y}] |
+          type: {props.type} |
+          status: {props.status}
+          </div>
     </div>
   )
 }

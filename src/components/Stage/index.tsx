@@ -20,7 +20,7 @@ export const Stage = () => {
             for(let col = 0; col < COLUMNS; col++){
                 panel = {
                     id: index,
-                    position: {x:0, y:0},
+                    position: {x:col, y:row},
                     type: "player",
                     status: "normal"
                 };
@@ -44,7 +44,10 @@ export const Stage = () => {
   return (
     <div className="stage">
         {
-        panels && panels.length > 0 && !isLoading ? panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
+        panels && 
+        panels.length > 0 && 
+        !isLoading ? 
+        panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
         :
         <></>
         }
