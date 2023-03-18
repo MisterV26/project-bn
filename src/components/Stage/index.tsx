@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IPanel } from '../../Interfaces/IPanel';
+import { IPlayer } from '../../Interfaces/IPlayer';
+import { StageContext } from '../../scenes/Battle/Battle';
 import { Panel } from '../Panel';
 import './style.css'
 
+
 export const Stage = () => {
 
-    const [panels, setPanels] = useState<IPanel[]>([]);
-    const [isLoading, setIsloading] = useState(false);
+    const {panels, setPanels} = useContext(StageContext);
 
     const ROWS = 3;
     const COLUMNS = 6;
@@ -33,10 +35,8 @@ export const Stage = () => {
 
     useEffect(() => {
         const setUp = async() =>{
-            setIsloading(true);
             let initialPanels = await setupPanels();
             setPanels(initialPanels);
-            setIsloading(false);
         };
         setUp();
     }, []);
@@ -45,8 +45,7 @@ export const Stage = () => {
     <div className="stage">
         {
         panels && 
-        panels.length > 0 && 
-        !isLoading ? 
+        panels.length > 0 ?
         panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
         :
         <></>
