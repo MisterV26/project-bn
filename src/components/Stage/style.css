@@ -1,0 +1,12 @@
+.stage {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 40%;
+    background-color: #41225e;
+    margin: auto;
+    bottom: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* column-gap: 4px; */
+}
