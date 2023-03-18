@@ -4,7 +4,8 @@
 
 .frame {
   display:flex;
-  width:90%;
+  /* width:90%; */
+  width: 1150px;
   margin: auto;
   margin-top: 40px;
   background-color: black;
