@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { usePosition } from '../../hooks/usePosition';
-import { ICoordinates } from '../../Interfaces/ICoordinates'
 import { IPlayer } from '../../Interfaces/IPlayer'
 import './style.css'
 
