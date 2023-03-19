@@ -1,7 +1,6 @@
 .panel-container {
-    flex: 1 0 auto;
-    flex-basis: 15%;
-    width: 100%;
+    width: 191px;
+    margin: 0 auto;
     /* height: 32%; */
     background-color: black;
 }

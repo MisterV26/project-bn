@@ -1,7 +1,7 @@
 import { ICoordinates } from "./ICoordinates";
 
 export interface IPlayer {
-    hp?: number;
+    hp?: any;
     position: ICoordinates;
     status?: string;
 

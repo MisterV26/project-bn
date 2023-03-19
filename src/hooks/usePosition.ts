@@ -8,7 +8,7 @@ interface Entity {
 export const usePosition = (width: number, height: number) => {
 return {
     calculatePosition : (position: ICoordinates):ICoordinates => {
-        const panelWidth = 190;
+        const panelWidth = 191;
         const panelHeight = 86;
     
         let resultPosition: ICoordinates = {
@@ -21,7 +21,7 @@ return {
     
     
         resultPosition = {
-          x: calculateX(position.x),
+          x: calculateX(position.x) + 3,
           y: calculateY(position.y)
         }
         return resultPosition;

@@ -10,24 +10,21 @@ const PLAYERHEIGHT = 100;
 export const Player = ({position}: IPlayer) => {
   
   const playerPosition = usePosition(PLAYERWIDTH, PLAYERHEIGHT);
-  const [player, setPlayer] = useState<IPlayer>({
-    position:{
-      x : playerPosition.calculatePosition(position).x,
-      y : playerPosition.calculatePosition(position).y
-    }
-  });
 
-  useEffect(() => {
-    console.log(player);
-  });
+useEffect(() => {
+}, []);
 
   return (
-    <div 
-    className="player" 
-    style={{
-      bottom: player.position.y, 
-      left: player.position.x
-    }}></div>
+    <>
+    {
+      <div 
+      className="player" 
+      style={{
+        bottom: playerPosition.calculatePosition(position).y, 
+        left: playerPosition.calculatePosition(position).x
+      }}></div>
+    }
+    </>
   )
 }
  
