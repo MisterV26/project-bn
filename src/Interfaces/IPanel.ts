@@ -2,8 +2,8 @@ import { ICoordinates } from "./ICoordinates";
 import { IPanelType } from "./IPanelType";
 
 export interface IPanel {
-    id: any;
+    id?: number;
     position: ICoordinates;
-    type: "player" | "enemy";
+    type: 'player' | 'enemy';
     status: "normal" | "cracked";
 }
