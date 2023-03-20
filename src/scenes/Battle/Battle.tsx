@@ -16,7 +16,8 @@ export const StageContext = React.createContext({} as IPanelsContext);
 export const Battle = () => {
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
-    hp: 100,
+    maxHp: 100,
+    currentHp: 100,
     status: "normal",
     position: { x: 1, y: 1 },
   });
@@ -79,7 +80,7 @@ export const Battle = () => {
       <div className="battle">
         <Debugger player={player} enemy={enemy} />
         <div className="scene-header">
-          <HpMeter playerHp={player.hp} />
+          <HpMeter {...player} />
         </div>
         <Player {...player} />
         <Enemy {...enemy} />

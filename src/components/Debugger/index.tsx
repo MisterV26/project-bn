@@ -13,7 +13,7 @@ export const Debugger = ({ player, enemy }: Props) => {
     <div className="debugger">
       {player && (
         <div className="debug-player">
-          <p>Player_hp: {player.hp}</p>
+          <p>Player_hp: {player.currentHp}</p>
           <p>
             Player_pos: ({player.position.x}, {player.position.y})
           </p>

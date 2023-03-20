@@ -26,7 +26,7 @@
 }
 
 .hp-red {
-    background: -webkit-linear-gradient(#f39f46,#eee, #f39f46);
+    background: -webkit-linear-gradient(#fe9422,#eee, #fe9422);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
