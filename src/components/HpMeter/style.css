@@ -1,6 +1,6 @@
 @font-face {
     font-family: mmbn;
-    src: url(./Mega-Man-Battle-Network.ttf);
+    src: url(../../globals/Mega-Man-Battle-Network.ttf);
   }
 
 .hp-meter-container {

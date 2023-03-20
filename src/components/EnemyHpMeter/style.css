@@ -1,0 +1,16 @@
+@font-face {
+  font-family: mmbn;
+  src: url(../../globals/Mega-Man-Battle-Network.ttf);
+}
+
+.enemy-hp-meter-container {
+    width: 130px;
+    color: #fff;
+    font-family: mmbn;
+    font-size: 19pt;
+    font-weight: bold;
+    margin-top: 75px;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    -webkit-transform:scale(1,.8);
+}
