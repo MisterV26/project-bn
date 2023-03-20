@@ -10,10 +10,13 @@ import { Debugger } from "../../components/Debugger";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { Enemy } from "../../components/Enemy";
 import { HpMeter } from "../../components/HpMeter";
+import { CustomBar } from "../../components/CustBar";
 
 export const StageContext = React.createContext({} as IPanelsContext);
 
 export const Battle = () => {
+  const [custFillActive, setCustFillActive] = useState(false);
+  const [custFillValue, setCustFillValue] = useState(1);
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
     maxHp: 100,
@@ -26,6 +29,7 @@ export const Battle = () => {
     status: "normal",
     position: { x: 4, y: 1 },
   });
+
 
   const handleKeyPress = (event: any) => {
     const key = event.key;
@@ -70,17 +74,21 @@ export const Battle = () => {
     }
   };
 
+
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress, false);
-    return () => window.removeEventListener("keydown", handleKeyPress, false);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress, false);
+    }
   }, [player.position]);
 
   return (
     <StageContext.Provider value={{ panels, setPanels }}>
-      <div className="battle">
+      <div className="battle">{custFillValue}
         <Debugger player={player} enemy={enemy} />
         <div className="scene-header">
           <HpMeter {...player} />
+          <CustomBar fillValue={custFillValue}/>
         </div>
         <Player {...player} />
         <Enemy {...enemy} />
