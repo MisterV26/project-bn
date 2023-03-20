@@ -1,6 +1,12 @@
 .debugger {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
+    position: absolute;
+    right: 0;
+}
 
+.debug-player {
+    color: #9ae6ff;
+}
+
+.debug-enemy {
+    color: #ff9a9a;
 }

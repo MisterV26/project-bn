@@ -1,0 +1,32 @@
+@font-face {
+    font-family: mmbn;
+    src: url(./Mega-Man-Battle-Network.ttf);
+  }
+
+.hp-meter-container {
+    width: 130px;
+    color: white;
+    background: #1b2b3c;
+    padding: 10px;
+    font-family: mmbn;
+    text-align: right;
+    font-size: 25pt;
+    border: 5px solid #cecece;
+    margin: 5px;
+}
+
+.hp-meter-container p {
+    margin: -4px 0;
+}
+
+.hp-blue {
+    background: -webkit-linear-gradient(#b8f1f4,#eee, #b8f1f4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hp-red {
+    background: -webkit-linear-gradient(#f39f46,#eee, #f39f46);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
