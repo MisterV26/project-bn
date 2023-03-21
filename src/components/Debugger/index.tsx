@@ -1,4 +1,5 @@
 import React from "react";
+import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { IPlayer } from "../../Interfaces/IPlayer";
 import './style.css';
@@ -6,10 +7,10 @@ import './style.css';
 interface Props {
   player?: IPlayer;
   enemy?: IEnemy;
-  custValue?: number;
+  custBar?: ICustomizerBar;
 }
 
-export const Debugger = ({ player, enemy, custValue }: Props) => {
+export const Debugger = ({ player, enemy, custBar }: Props) => {
   return (
     <div className="debugger">
       {player && (
@@ -30,7 +31,8 @@ export const Debugger = ({ player, enemy, custValue }: Props) => {
           <p>Enemy_status: {enemy.status}</p>
         </div>
       )}
-      <p>Customizer bar: {custValue?.toFixed(2)}</p>
+      <p>Custom_bar: {custBar?.value?.toFixed(2)}</p>
+      <p>Full_status: {String(custBar?.full)}</p>
     </div>
   );
 };

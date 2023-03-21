@@ -78,7 +78,7 @@ export const Battle = () => {
 
   useEffect(() => {
     const updateCust = () => {
-      if(custBar.value === 100){
+      if(custBar.value >= 100){
         setCustBar(prev => ({...prev, full: true}));
       }
       if(!custBar.full && custBar.value < 100){
@@ -99,7 +99,7 @@ export const Battle = () => {
   return (
     <StageContext.Provider value={{ panels, setPanels }}>
       <div className="battle">
-        <Debugger player={player} enemy={enemy} custValue={custBar.value} />
+        <Debugger player={player} enemy={enemy} custBar={custBar} />
         <div className="scene-header">
           <HpMeter {...player} />
           <CustomBar fillValue={custBar.value}/>
