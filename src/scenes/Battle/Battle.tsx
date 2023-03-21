@@ -11,6 +11,7 @@ import { Enemy } from "../../components/Enemy";
 import { HpMeter } from "../../components/HpMeter";
 import { CustomBar } from "../../components/CustBar";
 import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
+import { StatusWindow } from "../../components/StatusWindow";
 
 export const StageContext = React.createContext({} as IPanelsContext);
 
@@ -101,7 +102,10 @@ export const Battle = () => {
       <div className="battle">
         <Debugger player={player} enemy={enemy} custBar={custBar} />
         <div className="scene-header">
-          <HpMeter {...player} />
+          <div className="player-status">
+            <HpMeter {...player} />
+            <StatusWindow />
+          </div>
           <CustomBar fillValue={custBar.value}/>
         </div>
         <Player {...player} />

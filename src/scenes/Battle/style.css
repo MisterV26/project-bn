@@ -8,3 +8,9 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+
+.player-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
