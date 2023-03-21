@@ -5,18 +5,20 @@ import { IPanelsContext } from "../../Interfaces/IPanelsContext";
 import { IPanel } from "../../Interfaces/IPanel";
 import { IPlayer } from "../../Interfaces/IPlayer";
 import "./style.css";
-import { ICoordinates } from "../../Interfaces/ICoordinates";
 import { Debugger } from "../../components/Debugger";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { Enemy } from "../../components/Enemy";
 import { HpMeter } from "../../components/HpMeter";
 import { CustomBar } from "../../components/CustBar";
+import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 
 export const StageContext = React.createContext({} as IPanelsContext);
 
 export const Battle = () => {
-  const [custFillActive, setCustFillActive] = useState(false);
-  const [custFillValue, setCustFillValue] = useState(1);
+  const [custBar, setCustBar] = useState<ICustomizerBar>({
+    value: 1,
+    full: false
+  });
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
     maxHp: 100,
@@ -74,6 +76,18 @@ export const Battle = () => {
     }
   };
 
+  useEffect(() => {
+    const updateCust = () => {
+      if(custBar.value === 100){
+        setCustBar(prev => ({...prev, full: true}));
+      }
+      if(!custBar.full && custBar.value < 100){
+        setCustBar(prev => ({...prev, value: prev.value + 0.1}));
+      }
+    }
+    setTimeout(() => updateCust(), 1000 / 60);
+  }, [custBar.value, custBar.full]);
+
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress, false);
@@ -84,11 +98,11 @@ export const Battle = () => {
 
   return (
     <StageContext.Provider value={{ panels, setPanels }}>
-      <div className="battle">{custFillValue}
-        <Debugger player={player} enemy={enemy} />
+      <div className="battle">
+        <Debugger player={player} enemy={enemy} custValue={custBar.value} />
         <div className="scene-header">
           <HpMeter {...player} />
-          <CustomBar fillValue={custFillValue}/>
+          <CustomBar fillValue={custBar.value}/>
         </div>
         <Player {...player} />
         <Enemy {...enemy} />

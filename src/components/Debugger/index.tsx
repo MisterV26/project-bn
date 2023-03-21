@@ -6,9 +6,10 @@ import './style.css';
 interface Props {
   player?: IPlayer;
   enemy?: IEnemy;
+  custValue?: number;
 }
 
-export const Debugger = ({ player, enemy }: Props) => {
+export const Debugger = ({ player, enemy, custValue }: Props) => {
   return (
     <div className="debugger">
       {player && (
@@ -29,6 +30,7 @@ export const Debugger = ({ player, enemy }: Props) => {
           <p>Enemy_status: {enemy.status}</p>
         </div>
       )}
+      <p>Customizer bar: {custValue?.toFixed(2)}</p>
     </div>
   );
 };
