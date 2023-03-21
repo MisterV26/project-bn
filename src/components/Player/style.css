@@ -1,8 +1,16 @@
 .player {
-    width: 100px;
-    height: 100px;
-    background-color: blue;
+    display: flex;
+    justify-content: center;
+    width: 120px;
+    height: 130px;
     border-radius: 50px;
     position: absolute;
     z-index: 1;
+}
+
+.player_sprite {
+    width: 121%;
+    height: 115%;
+    background-position: -206px -25px;
+    background-size: 90em;
 }

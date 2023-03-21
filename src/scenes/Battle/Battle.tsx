@@ -22,13 +22,13 @@ export const Battle = () => {
   });
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
-    maxHp: 100,
-    currentHp: 100,
+    maxHp: 500,
+    currentHp: 500,
     status: "normal",
     position: { x: 1, y: 1 },
   });
   const [enemy, setEnemy] = useState<IEnemy>({
-    hp: 300,
+    hp: 1500,
     status: "normal",
     position: { x: 4, y: 1 },
   });

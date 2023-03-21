@@ -1,10 +1,17 @@
 .enemy {
-    display: flex;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    background-color: red;
+
+    width: 120px;
+    height: 130px;
     border-radius: 50px;
     position: absolute;
     z-index: 1;
+}
+
+.enemy_sprite {
+    margin-top: -85px;
+    margin-left: -20px;
+    width: 141%;
+    height: 179%;
+    background-position: -1116px -10px;
+    background-size: 90em;
 }
