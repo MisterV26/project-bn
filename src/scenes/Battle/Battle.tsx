@@ -95,7 +95,7 @@ export const Battle = () => {
         setCustBar((prev) => ({ ...prev, full: true }));
       }
       if (!custBar.full && custBar.value < 100) {
-        setCustBar((prev) => ({ ...prev, value: prev.value + 0.1 }));
+        setCustBar((prev) => ({ ...prev, value: prev.value + 0.2 }));
       }
     };
     setTimeout(() => updateCust(), 1000 / 60);
@@ -128,9 +128,9 @@ export const Battle = () => {
           </div>
           {!isCustomizing && <CustomBar fillValue={custBar.value} />}
         </div>
-        <Player {...player} />
-        <Enemy {...enemy} />
-        <Stage />
+        <Player isCustomizing={isCustomizing} player={player}  />
+        <Enemy isCustomizing={isCustomizing} enemy={enemy} />
+        <Stage isCustomizing={isCustomizing}/>
       </div>
     </StageContext.Provider>
   );

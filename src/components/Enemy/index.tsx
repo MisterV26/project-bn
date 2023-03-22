@@ -4,12 +4,15 @@ import { IEnemy } from '../../Interfaces/IEnemy';
 import { EnemyHpMeter } from '../EnemyHpMeter';
 import './style.css';
 const bassImage = require('../../globals/images/Forte_EXE5_b.gif');
-
-
 const ENEMYWIDTH = 100;
 const ENEMYHEIGHT = 100;
 
-export const Enemy = (props: IEnemy) => {
+interface Props {
+  isCustomizing: boolean;
+  enemy: IEnemy;
+}
+
+export const Enemy = ({enemy, isCustomizing}: Props) => {
   
   const enemyPosition = usePosition(ENEMYWIDTH, ENEMYHEIGHT);
 
@@ -20,13 +23,14 @@ useEffect(() => {
     <>
     {
       <div 
-      className="enemy" 
+      className={`enemy ${isCustomizing ? "--standby" : "--active"}`} 
       style={{
-        bottom: enemyPosition.calculatePosition(props.position).y, 
-        left: enemyPosition.calculatePosition(props.position).x
+        bottom: enemyPosition.calculatePosition(enemy.position).y, 
+        left: enemyPosition.calculatePosition(enemy.position).x
       }}>
-        <div className="enemy_sprite" style={{backgroundImage: `url(${bassImage})`}}></div>
-        <EnemyHpMeter {...props} />
+        <div className="enemy_sprite" style={{backgroundImage: `url(${bassImage})`}}>
+        <EnemyHpMeter {...enemy} />
+        </div>
       </div>
     }
     

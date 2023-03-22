@@ -1,6 +1,7 @@
 .battle {
     position: relative;
     width: 100%;
+    overflow: hidden;
 }
 
 .scene-header {

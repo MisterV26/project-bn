@@ -6,6 +6,7 @@
     border-radius: 50px;
     position: absolute;
     z-index: 1;
+    align-items: center;
 }
 
 .player_sprite {
@@ -13,4 +14,16 @@
     height: 115%;
     background-position: -206px -25px;
     background-size: 90em;
+}
+
+.--standby {
+    margin-bottom: -20px;
+    transition: 0.2s;
+    animation-fill-mode: forwards;
+}
+
+.--active {
+    margin-bottom: 0px;
+    transition: 0.2s;
+    animation-fill-mode: forwards;
 }

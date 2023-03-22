@@ -6,7 +6,11 @@ import { StageContext } from "../../scenes/Battle/Battle";
 import { Panel } from "../Panel";
 import "./style.css";
 
-export const Stage = () => {
+interface Props {
+  isCustomizing: boolean;
+}
+
+export const Stage = ({isCustomizing}: Props) => {
   const { panels, setPanels } = useContext(StageContext);
 
   const ROWS = 3;
@@ -45,7 +49,7 @@ export const Stage = () => {
   }, []);
 
   return (
-    <div className="stage">
+    <div className={`stage ${isCustomizing ? "--customizing" : "--battling"}`}>
       <div className="stage-overlay"></div>
       {panels && panels.length > 0 ? (
         panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
