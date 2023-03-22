@@ -8,9 +8,10 @@ interface Props {
   player?: IPlayer;
   enemy?: IEnemy;
   custBar?: ICustomizerBar;
+  isCustomizing?: boolean;
 }
 
-export const Debugger = ({ player, enemy, custBar }: Props) => {
+export const Debugger = ({ player, enemy, custBar, isCustomizing }: Props) => {
   return (
     <div className="debugger">
       {player && (
@@ -33,6 +34,7 @@ export const Debugger = ({ player, enemy, custBar }: Props) => {
       )}
       <p>Custom_bar: {custBar?.value?.toFixed(2)}</p>
       <p>Full_status: {String(custBar?.full)}</p>
+      <p>Is customizing: {String(isCustomizing)}</p>
     </div>
   );
 };

@@ -17,10 +17,10 @@ import { CustomWindow } from "../../components/CustWindow";
 export const StageContext = React.createContext({} as IPanelsContext);
 
 export const Battle = () => {
-  const [isCustomizing, setIsCustomizing] = useState(true);
+  const [isCustomizing, setIsCustomizing] = useState(false);
   const [custBar, setCustBar] = useState<ICustomizerBar>({
     value: 1,
-    full: false
+    full: false,
   });
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
@@ -34,7 +34,6 @@ export const Battle = () => {
     status: "normal",
     position: { x: 4, y: 1 },
   });
-
 
   const handleKeyPress = (event: any) => {
     const key = event.key;
@@ -73,6 +72,17 @@ export const Battle = () => {
             }));
           }
           break;
+        case "a":
+          console.log(custBar.full)
+          if(custBar.full){
+            setIsCustomizing(true);
+            setCustBar((prev) => ({ ...prev, value: 0 }));
+          }
+          break;
+        case "l":
+          setIsCustomizing(!isCustomizing);
+          setCustBar((prev) => ({ ...prev, full: false }));
+          break;
         default:
           break;
       }
@@ -81,36 +91,42 @@ export const Battle = () => {
 
   useEffect(() => {
     const updateCust = () => {
-      if(custBar.value >= 100){
-        setCustBar(prev => ({...prev, full: true}));
+      if (custBar.value >= 100) {
+        setCustBar((prev) => ({ ...prev, full: true }));
       }
-      if(!custBar.full && custBar.value < 100){
-        setCustBar(prev => ({...prev, value: prev.value + 0.1}));
+      if (!custBar.full && custBar.value < 100) {
+        setCustBar((prev) => ({ ...prev, value: prev.value + 0.1 }));
       }
-    }
+    };
     setTimeout(() => updateCust(), 1000 / 60);
   }, [custBar.value, custBar.full]);
-
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyPress, false);
     return () => {
       window.removeEventListener("keydown", handleKeyPress, false);
-    }
-  }, [player.position]);
+    };
+  }, [player.position, isCustomizing, custBar.full]);
 
   return (
     <StageContext.Provider value={{ panels, setPanels }}>
       <div className="battle">
-        <Debugger player={player} enemy={enemy} custBar={custBar} />
-        {isCustomizing && <CustomWindow />}
+        <Debugger
+          player={player}
+          enemy={enemy}
+          custBar={custBar}
+          isCustomizing={isCustomizing}
+        />
+        <CustomWindow isCustomizing={isCustomizing} />
         <div className="scene-header">
-          <div className={`window-margin ${isCustomizing ? "--open" : "--close"}`}></div>
+          <div
+            className={`window-margin ${isCustomizing ? "--open" : "--close"}`}
+          ></div>
           <div className="player-status">
             <HpMeter {...player} />
             <StatusWindow />
           </div>
-          {!isCustomizing && <CustomBar fillValue={custBar.value}/>}
+          {!isCustomizing && <CustomBar fillValue={custBar.value} />}
         </div>
         <Player {...player} />
         <Enemy {...enemy} />

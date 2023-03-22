@@ -2,6 +2,6 @@ import React from 'react'
 
 export const ChipList = () => {
   return (
-    <div>ChipList</div>
+    <div className="chip-list-container">ChipList</div>
   )
 }
