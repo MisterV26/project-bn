@@ -1,6 +1,16 @@
 .debugger {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    width: 35%;
     position: absolute;
     right: 0;
+}
+
+.debug {
+    padding:5px;
+    text-align: left;
 }
 
 .debug-player {
