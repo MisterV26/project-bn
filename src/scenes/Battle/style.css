@@ -14,3 +14,18 @@
     flex-direction: column;
     justify-content: flex-start;
 }
+
+.window-margin{
+}
+
+.--open {
+    transition: 0.2s;
+    width: 50%;
+    animation-fill-mode: forwards;
+}
+
+.--close {
+    transition: 0.2s;
+    width: 0;
+    animation-fill-mode: forwards;
+}

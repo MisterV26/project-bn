@@ -12,10 +12,12 @@ import { HpMeter } from "../../components/HpMeter";
 import { CustomBar } from "../../components/CustBar";
 import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 import { StatusWindow } from "../../components/StatusWindow";
+import { CustomWindow } from "../../components/CustWindow";
 
 export const StageContext = React.createContext({} as IPanelsContext);
 
 export const Battle = () => {
+  const [isCustomizing, setIsCustomizing] = useState(true);
   const [custBar, setCustBar] = useState<ICustomizerBar>({
     value: 1,
     full: false
@@ -101,12 +103,14 @@ export const Battle = () => {
     <StageContext.Provider value={{ panels, setPanels }}>
       <div className="battle">
         <Debugger player={player} enemy={enemy} custBar={custBar} />
+        {isCustomizing && <CustomWindow />}
         <div className="scene-header">
+          <div className={`window-margin ${isCustomizing ? "--open" : "--close"}`}></div>
           <div className="player-status">
             <HpMeter {...player} />
             <StatusWindow />
           </div>
-          <CustomBar fillValue={custBar.value}/>
+          {!isCustomizing && <CustomBar fillValue={custBar.value}/>}
         </div>
         <Player {...player} />
         <Enemy {...enemy} />
