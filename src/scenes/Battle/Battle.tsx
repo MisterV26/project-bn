@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Player } from "../../components/Player";
 import { Stage } from "../../components/Stage";
 import { IPanelsContext } from "../../Interfaces/IPanelsContext";
@@ -13,8 +13,13 @@ import { CustomBar } from "../../components/CustBar";
 import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 import { StatusWindow } from "../../components/StatusWindow";
 import { CustomWindow } from "../../components/CustWindow";
+import { ISpriteDataContext } from "../../Interfaces/ISpriteDataContext";
 
-export const StageContext = React.createContext({} as IPanelsContext);
+export const StageContext = createContext({} as IPanelsContext);
+export const SpriteDataContext = createContext({} as ISpriteDataContext);
+
+const SpriteData = require('../../globals/SpriteData.json');
+
 
 export const Battle = () => {
   const [isCustomizing, setIsCustomizing] = useState(false);
@@ -22,6 +27,7 @@ export const Battle = () => {
     value: 1,
     full: false,
   });
+  const [spriteData, setSpriteData] = useState(SpriteData);
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [player, setPlayer] = useState<IPlayer>({
     maxHp: 500,
@@ -30,6 +36,7 @@ export const Battle = () => {
     position: { x: 1, y: 1 },
   });
   const [enemy, setEnemy] = useState<IEnemy>({
+    name: 'bass',
     hp: 1500,
     status: "normal",
     position: { x: 4, y: 1 },
@@ -128,9 +135,11 @@ export const Battle = () => {
           </div>
           {!isCustomizing && <CustomBar fillValue={custBar.value} />}
         </div>
+        <SpriteDataContext.Provider value={{ spriteData, setSpriteData}}>
         <Player isCustomizing={isCustomizing} player={player}  />
-        <Enemy isCustomizing={isCustomizing} enemy={enemy} />
+        <Enemy isCustomizing={isCustomizing} enemy={enemy}  />
         <Stage isCustomizing={isCustomizing}/>
+        </SpriteDataContext.Provider>
       </div>
     </StageContext.Provider>
   );

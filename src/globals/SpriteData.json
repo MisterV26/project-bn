@@ -1,0 +1,17 @@
+{
+    "bass": {
+        "sprite" : {
+            "width": 169,
+            "height": 240,
+            "sheet": "sheet_forte",
+            "idle": [
+                {
+                    "x": -1105,
+                    "y": -10,
+                    "width": 169,
+                    "height": 240
+                }
+            ]
+        }
+    }
+}

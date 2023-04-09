@@ -3,21 +3,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 120px;
-    height: 240px;
     border-radius: 50px;
     position: absolute;
     z-index: 1;
 
-}
-
-.enemy_sprite {
-    display: flex;
-    justify-content: center;
-    width: 141%;
-    height: 100%;
-    background-position: -1116px -10px;
-    background-size: 90em;
 }
 
 .--standby {

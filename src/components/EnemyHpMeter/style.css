@@ -4,14 +4,16 @@
 }
 
 .enemy-hp-meter-container {
-  display: inline-flex;
-  align-self: flex-end;
     color: #fff;
     font-family: mmbn;
     font-size: 19pt;
     font-weight: bold;
-    margin-bottom: -45px;;
+    margin-top: -15px;
     -webkit-text-stroke-width: 1px;
     -webkit-text-stroke-color: black;
     -webkit-transform:scale(1,.8);
+}
+
+.enemy-hp-meter-container p {
+  margin: 0;
 }

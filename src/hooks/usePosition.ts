@@ -17,7 +17,7 @@ return {
         };
     
         const calculateX = (x: number): number => ((panelWidth * (x + 1)) - (panelWidth / 2)) - (width / 2);
-        const calculateY = (y: number): number => ((((panelHeight * 3) + 20) - (panelHeight * y)) - (height / 2))
+        const calculateY = (y: number): number => ((((panelHeight * 3) + 20) - (panelHeight * y)) - (height / 4))
     
     
         resultPosition = {

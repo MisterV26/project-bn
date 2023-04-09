@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { usePosition } from '../../hooks/usePosition';
 import { IEnemy } from '../../Interfaces/IEnemy';
 import { EnemyHpMeter } from '../EnemyHpMeter';
 import './style.css';
-const bassImage = require('../../globals/images/Forte_EXE5_b.gif');
+import { Sprite } from '../Sprite';
+import { SpriteDataContext } from '../../scenes/Battle/Battle';
+
 const ENEMYWIDTH = 100;
 const ENEMYHEIGHT = 100;
 
@@ -14,7 +16,13 @@ interface Props {
 
 export const Enemy = ({enemy, isCustomizing}: Props) => {
   
-  const enemyPosition = usePosition(ENEMYWIDTH, ENEMYHEIGHT);
+  const {spriteData, setSpriteData} = useContext(SpriteDataContext);
+  let entity = spriteData[enemy.name];
+  let sprite = entity.sprite;
+
+  console.log(sprite)
+
+  const enemyPosition = usePosition(sprite.width, sprite.height);
 
 useEffect(() => {
 }, []);
@@ -25,10 +33,13 @@ useEffect(() => {
       <div 
       className={`enemy ${isCustomizing ? "--standby" : "--active"}`} 
       style={{
+        width: sprite.width,
+        height: sprite.height,
         bottom: enemyPosition.calculatePosition(enemy.position).y, 
         left: enemyPosition.calculatePosition(enemy.position).x
       }}>
-        <div className="enemy_sprite" style={{backgroundImage: `url(${bassImage})`}}>
+        <div className="enemy_sprite">
+        <Sprite spriteData={entity} />
         <EnemyHpMeter {...enemy} />
         </div>
       </div>
