@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import { Player } from "../../components/Player";
 import { Stage } from "../../components/Stage";
 import { IPanelsContext } from "../../Interfaces/IPanelsContext";
@@ -22,6 +22,8 @@ const SpriteData = require('../../globals/SpriteData.json');
 
 
 export const Battle = () => {
+  const [ticks, setTicks] = useState(0);
+
   const [isCustomizing, setIsCustomizing] = useState(false);
   const [custBar, setCustBar] = useState<ICustomizerBar>({
     value: 1,
@@ -97,6 +99,12 @@ export const Battle = () => {
   };
 
   useEffect(() => {
+    setTimeout(() => {
+      setTicks((prev) => prev+=1);
+    }, 10000/60);  
+  }, [ticks]);
+
+  useEffect(() => {
     const updateCust = () => {
       if (custBar.value >= 100) {
         setCustBar((prev) => ({ ...prev, full: true }));
@@ -119,6 +127,7 @@ export const Battle = () => {
     <StageContext.Provider value={{ panels, setPanels }}>
       <div className="battle">
         <Debugger
+          ticks={ticks}
           player={player}
           enemy={enemy}
           custBar={custBar}
@@ -137,7 +146,7 @@ export const Battle = () => {
         </div>
         <SpriteDataContext.Provider value={{ spriteData, setSpriteData}}>
         <Player isCustomizing={isCustomizing} player={player}  />
-        <Enemy isCustomizing={isCustomizing} enemy={enemy}  />
+        <Enemy isCustomizing={isCustomizing} enemy={enemy} ticks={ticks} />
         <Stage isCustomizing={isCustomizing}/>
         </SpriteDataContext.Provider>
       </div>

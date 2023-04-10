@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 
 interface Images {
@@ -11,26 +11,47 @@ interface Images {
   }
 
 export const Sprite = ({...props}) => {
-    console.log(props)
+
+    const [sIndex, setSIndex] = useState(0);
+    const [direction, setDirection] = useState(0);
+
     let sprite = props.spriteData.sprite;
     let sheet = images[sprite.sheet];
     let scale = 8.5;
 
-    const getSprite = (sequence: string) => {
-        return {
-                backgroundImage: `url(${sheet})`,
-                backgroundPosition: `${sprite[sequence][0].x}px ${sprite[sequence][0].y}px`,
-                backgroundSize: `${sprite[sequence][0].width * scale}px`,
-                width: `${sprite[sequence][0].width}px`,
-                height: `${sprite[sequence][0].height}px`
-        }
+    let inc = useRef(1);
+    let v = useRef(0);
+
+    const getSprite = (sequence: string, animated:boolean = false) => {
+        let index = sIndex;
+
+        if(!animated){ index = 0};
+
+        let properties = {
+            backgroundImage: `url(${sheet})`,
+            backgroundPosition: `${sprite[sequence][index].x}px ${sprite[sequence][index].y}px`,
+            backgroundSize: `1440px`,
+            width: `${sprite[sequence][index].width}px`,
+            height: `${sprite[sequence][index].height}px`
+        };
+
+        return properties;
     };
+
+    useEffect(() => {
+        v.current += inc.current;
+
+        if(0 === v.current % (sprite[props.state].length - 1)){
+            inc.current *= -1;
+        }
+        setSIndex(v.current);
+    }, [props.ticks]);
 
     return (
         props &&
         <div 
             className="entity_sprite" 
-            style={{...getSprite('idle')}}>
+            style={{...getSprite(props.state, props.animated)}}>
         </div>
   )
 }

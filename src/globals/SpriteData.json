@@ -1,4 +1,20 @@
 {
+    "megaman": {
+        "sprite" : {
+            "width": 120,
+            "height": 149,
+            "sheet": "sheet_megaman",
+            "idle": [
+                {
+                    "x": -206,
+                    "y": -25,
+                    "width": 120,
+                    "height": 149
+                }
+            ]
+        }
+    },
+
     "bass": {
         "sprite" : {
             "width": 169,
@@ -6,8 +22,26 @@
             "sheet": "sheet_forte",
             "idle": [
                 {
-                    "x": -1105,
-                    "y": -10,
+                    "x": -1114,
+                    "y": -2,
+                    "width": 169,
+                    "height": 240
+                },
+                {
+                    "x": -937,
+                    "y": -2,
+                    "width": 169,
+                    "height": 240
+                },
+                {
+                    "x": -761,
+                    "y": -2,
+                    "width": 169,
+                    "height": 240
+                },
+                {
+                    "x": -581,
+                    "y": -2,
                     "width": 169,
                     "height": 240
                 }

@@ -9,9 +9,10 @@ interface Props {
   enemy?: IEnemy;
   custBar?: ICustomizerBar;
   isCustomizing?: boolean;
+  ticks?: number;
 }
 
-export const Debugger = ({ player, enemy, custBar, isCustomizing }: Props) => {
+export const Debugger = ({ ticks, player, enemy, custBar, isCustomizing }: Props) => {
   return (
     <div className="debugger">
       {player && (
@@ -33,6 +34,7 @@ export const Debugger = ({ player, enemy, custBar, isCustomizing }: Props) => {
         </div>
       )}
       <div className="debug misc">
+        <p>Time: {ticks}</p>
         <p>Custom_bar: {custBar?.value?.toFixed(2)}</p>
         <p>Full_status: {String(custBar?.full)}</p>
         <p>Is customizing: {String(isCustomizing)}</p>

@@ -12,15 +12,14 @@ const ENEMYHEIGHT = 100;
 interface Props {
   isCustomizing: boolean;
   enemy: IEnemy;
+  ticks: number;
 }
 
-export const Enemy = ({enemy, isCustomizing}: Props) => {
+export const Enemy = ({enemy, isCustomizing, ticks}: Props) => {
   
   const {spriteData, setSpriteData} = useContext(SpriteDataContext);
   let entity = spriteData[enemy.name];
   let sprite = entity.sprite;
-
-  console.log(sprite)
 
   const enemyPosition = usePosition(sprite.width, sprite.height);
 
@@ -39,7 +38,7 @@ useEffect(() => {
         left: enemyPosition.calculatePosition(enemy.position).x
       }}>
         <div className="enemy_sprite">
-        <Sprite spriteData={entity} />
+        <Sprite spriteData={entity} state="idle" animated="true" ticks={ticks}/>
         <EnemyHpMeter {...enemy} />
         </div>
       </div>
