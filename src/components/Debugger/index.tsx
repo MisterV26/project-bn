@@ -35,7 +35,8 @@ export const Debugger = () => {
         </div>
       )}
       <div className="debug misc">
-        <p>Time: {battleRef.current.ticks}</p>
+        <p>Ticks: {battleRef.current.ticks}</p>
+        <p>Time: {battleRef.current.timeStamp}</p>
         <p>Custom_bar: {battleProperties?.customBarValue?.toFixed(2)}</p>
         <p>Full_status: {String(battleProperties?.customBarFull)}</p>
         <p>Is customizing: {String(battleProperties.isCustomizing)}</p>

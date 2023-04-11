@@ -51,12 +51,14 @@ export const Battle = () => {
   });
 
   const ticksRef = useRef(ticks);
+  const timeStampRef = useRef("00:00:00");
   const playerRef = useRef(player);
   const enemyRef = useRef(enemy);
   const battlePropertiesRef = useRef(battleProperties);
 
   const battleRef = useRef({
     ticks: ticksRef.current,
+    timeStamp: timeStampRef.current,
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
@@ -71,6 +73,7 @@ export const Battle = () => {
 
   battleRef.current = {
     ticks: ticksRef.current,
+    timeStamp: timeStampRef.current,
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
@@ -80,7 +83,17 @@ export const Battle = () => {
 
 
 
+  const updateTime = (s: any) => {
+    let ms = s % 1000;
+    s = (s - ms) / 1000;
 
+    let secs = s % 60;
+    s = (s - secs) / 60;
+    
+    let mins = s % 60;
+
+    return `${mins < 10 ? '0'+mins : mins}:${secs < 10 ? '0'+secs : secs}:${ms < 10 ? '0'+ms : ms}`;
+  }
 
   const updateCustomBar = () => {
     if (battlePropertiesRef.current.customBarValue >= 100) {
@@ -96,10 +109,12 @@ export const Battle = () => {
     let frameId: any;
     // process input
     window.addEventListener("keydown", joypad.handleKeyPress, false);
+    
     const frame = (time: any) => {
       // Update logic
-      setTicks(time);
+      setTicks(time%100);
       if (!battleProperties.battleIsPaused) {
+        timeStampRef.current = updateTime(time);
         updateCustomBar();
       }
       frameId = requestAnimationFrame(frame);
