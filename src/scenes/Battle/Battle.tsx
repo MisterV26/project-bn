@@ -14,7 +14,10 @@ import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 import { StatusWindow } from "../../components/StatusWindow";
 import { CustomWindow } from "../../components/CustWindow";
 import { ISpriteDataContext } from "../../Interfaces/ISpriteDataContext";
+import { IBattleContext } from "../../Interfaces/IBattleContext";
+import { IBattle } from "../../Interfaces/IBattle";
 
+export const BattleContext = createContext({} as IBattleContext);
 export const StageContext = createContext({} as IPanelsContext);
 export const SpriteDataContext = createContext({} as ISpriteDataContext);
 
@@ -23,24 +26,19 @@ const SpriteData = require("../../globals/SpriteData.json");
 export const Battle = () => {
   const [ticks, setTicks] = useState(0);
 
-  const [isCustomizing, setIsCustomizing] = useState(false);
-  const [custBar, setCustBar] = useState<ICustomizerBar>({
+  const [customBar, setCustomBar] = useState<ICustomizerBar>({
     value: 1,
     full: false,
   });
   const [spriteData, setSpriteData] = useState(SpriteData);
   const [panels, setPanels] = useState<IPanel[]>([]);
+  const [battle, setBattle] = useState<IBattle>({} as IBattle);
   const [player, setPlayer] = useState<IPlayer>({
     maxHp: 500,
     currentHp: 500,
     status: "normal",
     position: { x: 1, y: 1 },
   });
-
-  const battleIsPaused = useRef(false);
-  const ticksRef = useRef(ticks);
-  const playerRef = useRef(player);
-  const customBarRef = useRef(custBar);
 
   const [enemy, setEnemy] = useState<IEnemy>({
     name: "bass",
@@ -49,12 +47,37 @@ export const Battle = () => {
     position: { x: 4, y: 1 },
   });
 
+  const battleIsPausedRef = useRef(false);
+  const ticksRef = useRef(ticks);
+  const playerRef = useRef(player);
+  const enemyRef = useRef(enemy);
+  const customBarRef = useRef(customBar);
+  const isCustomizingRef = useRef(false);
+
+  const battleRef = useRef({
+    battleIsPaused: battleIsPausedRef.current,
+    ticks: ticksRef.current,
+    player: playerRef.current,
+    enemy: enemyRef.current,
+    customBar: customBarRef.current,
+    isCustomizing: isCustomizingRef.current
+  });
+
   // Updated whenever player ref state changes
   // You cannot use state to check conditionals because it is async.
   // Use ref to track conditionals.
   ticksRef.current = ticks;
   playerRef.current = player;
-  customBarRef.current = custBar;
+  customBarRef.current = customBar;
+
+  battleRef.current = {
+    battleIsPaused: battleIsPausedRef.current,
+    ticks: ticksRef.current,
+    player: playerRef.current,
+    enemy: enemyRef.current,
+    customBar: customBarRef.current,
+    isCustomizing: isCustomizingRef.current
+  };
 
   const handleKeyPress = (event: any) => {
     const key = event.key;
@@ -82,20 +105,20 @@ export const Battle = () => {
         break;
       case "a":
         if (customBarRef.current.full) {
-          setIsCustomizing(true);
+          isCustomizingRef.current = true;
           togglePauseBattle();
           customBarRef.current.value = 0;
         }
         break;
       case "l":
-        setIsCustomizing(false);
+        isCustomizingRef.current = false;
         togglePauseBattle();
         customBarRef.current.full = false;
         break;
 
       case "Enter":
         console.log(6);
-        if (!isCustomizing) {
+        if (!isCustomizingRef.current) {
           togglePauseBattle();
         }
         break;
@@ -105,22 +128,22 @@ export const Battle = () => {
   };
 
   const ifCanMovePlayer = () => {
-    return player && !battleIsPaused.current;
+    return player && !battleIsPausedRef.current;
   };
 
   const togglePauseBattle = (state?: boolean) => {
     if (state) {
-      battleIsPaused.current = state;
+      battleIsPausedRef.current = state;
       return;
     }
-    battleIsPaused.current = !battleIsPaused.current;
+    battleIsPausedRef.current = !battleIsPausedRef.current;
   };
 
   const updateCustomBar = () => {
     if (customBarRef.current.value >= 100) {
       customBarRef.current.full = true;
     }
-    if (!custBar.full && customBarRef.current.value < 100) {
+    if (!customBar.full && customBarRef.current.value < 100) {
       customBarRef.current.value += 0.1;
     }
   };
@@ -133,7 +156,7 @@ export const Battle = () => {
     const frame = (time: any) => {
       // Update logic
       setTicks(time);
-      if (!battleIsPaused.current) {
+      if (!battleIsPausedRef.current) {
         updateCustomBar();
       }
       frameId = requestAnimationFrame(frame);
@@ -149,43 +172,26 @@ export const Battle = () => {
 
   // render
   return (
-    <StageContext.Provider value={{ panels, setPanels }}>
+    <BattleContext.Provider value={{ battleRef, battle, setBattle }}>
       <div className="battle">
-        <Debugger
-          ticks={ticksRef.current}
-          player={playerRef.current}
-          enemy={enemy}
-          custBar={customBarRef.current}
-          isCustomizing={isCustomizing}
-        />
-        <CustomWindow isCustomizing={isCustomizing} />
+        <Debugger />
+        <CustomWindow />
         <div className="scene-header">
-          <div
-            className={`window-margin ${isCustomizing ? "--open" : "--close"}`}
-          ></div>
+          <div className={`window-margin ${isCustomizingRef.current ? "--open" : "--close"}`}></div>
           <div className="player-status">
-            <HpMeter {...player} />
+            <HpMeter {...playerRef.current} />
             <StatusWindow />
           </div>
-          {!isCustomizing && (
+          {!isCustomizingRef.current && (
             <CustomBar fillValue={customBarRef.current.value} />
           )}
         </div>
         <SpriteDataContext.Provider value={{ spriteData, setSpriteData }}>
-          <Player
-            isCustomizing={isCustomizing}
-            player={playerRef.current}
-            battleIsPaused={battleIsPaused.current}
-          />
-          <Enemy
-            isCustomizing={isCustomizing}
-            enemy={enemy}
-            ticks={ticks}
-            battleIsPaused={battleIsPaused.current}
-          />
-          <Stage isCustomizing={isCustomizing} />
+          <Player />
+          <Enemy />
+          <Stage isCustomizing={isCustomizingRef.current} />
         </SpriteDataContext.Provider>
       </div>
-    </StageContext.Provider>
+    </BattleContext.Provider>
   );
 };

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { panelTypeMap } from "../../globals/PanelMap";
 import { IPanel } from "../../Interfaces/IPanel";
 import { IPlayer } from "../../Interfaces/IPlayer";
-import { StageContext } from "../../scenes/Battle/Battle";
+import { BattleContext, StageContext } from "../../scenes/Battle/Battle";
 import { Panel } from "../Panel";
 import "./style.css";
 
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export const Stage = ({isCustomizing}: Props) => {
-  const { panels, setPanels } = useContext(StageContext);
+  const { battle, setBattle } = useContext(BattleContext);
 
   const ROWS = 3;
   const COLUMNS = 6;
@@ -43,7 +43,7 @@ export const Stage = ({isCustomizing}: Props) => {
   useEffect(() => {
     const setUp = async () => {
       let initialPanels = await setupPanels();
-      setPanels(initialPanels);
+      setBattle((prev)=>({...prev, panels: initialPanels}));
     };
     setUp();
   }, []);
@@ -51,8 +51,8 @@ export const Stage = ({isCustomizing}: Props) => {
   return (
     <div className={`stage ${isCustomizing ? "--customizing" : "--battling"}`}>
       <div className="stage-overlay"></div>
-      {panels && panels.length > 0 ? (
-        panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
+      {battle.panels && battle.panels.length > 0 ? (
+        battle.panels.map((panel: IPanel) => <Panel key={panel.id} {...panel} />)
       ) : (
         <></>
       )}

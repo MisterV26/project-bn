@@ -1,21 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
 import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { IPlayer } from "../../Interfaces/IPlayer";
 import "./style.css";
+import { BattleContext } from "../../scenes/Battle/Battle";
 
-interface Props {
-  player?: IPlayer;
-  enemy?: IEnemy;
-  custBar?: ICustomizerBar;
-  isCustomizing?: boolean;
-  ticks?: number;
-}
 
-export const Debugger = ({ ticks, player, enemy, custBar, isCustomizing }: Props) => {
+export const Debugger = () => {
+  
+  const {battleRef} = useContext(BattleContext);
+  
+  let player = battleRef.current.player;
+  let enemy = battleRef.current.enemy;
+  let customBar = battleRef.current.customBar;
+  let isCustomizing = battleRef.current.isCustomizing;
+
   return (
     <div className="debugger">
-      {player && (
+      {battleRef.current.player && (
         <div className="debug debug-player">
           <p>Player_hp: {player.currentHp}</p>
           <p>
@@ -34,9 +36,9 @@ export const Debugger = ({ ticks, player, enemy, custBar, isCustomizing }: Props
         </div>
       )}
       <div className="debug misc">
-        <p>Time: {ticks}</p>
-        <p>Custom_bar: {custBar?.value?.toFixed(2)}</p>
-        <p>Full_status: {String(custBar?.full)}</p>
+        <p>Time: {battleRef.current.ticks}</p>
+        <p>Custom_bar: {customBar?.value?.toFixed(2)}</p>
+        <p>Full_status: {String(customBar?.full)}</p>
         <p>Is customizing: {String(isCustomizing)}</p>
       </div>
     </div>

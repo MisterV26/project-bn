@@ -4,7 +4,7 @@ import { IEnemy } from '../../Interfaces/IEnemy';
 import { EnemyHpMeter } from '../EnemyHpMeter';
 import './style.css';
 import { Sprite } from '../Sprite';
-import { SpriteDataContext } from '../../scenes/Battle/Battle';
+import { BattleContext, SpriteDataContext } from '../../scenes/Battle/Battle';
 
 const ENEMYWIDTH = 100;
 const ENEMYHEIGHT = 100;
@@ -16,9 +16,17 @@ interface Props {
   battleIsPaused: boolean;
 }
 
-export const Enemy = ({enemy, isCustomizing, ticks, battleIsPaused}: Props) => {
+export const Enemy = () => {
   
+  const {battleRef} = useContext(BattleContext);
   const {spriteData, setSpriteData} = useContext(SpriteDataContext);
+  
+  let ticks = battleRef.current.ticks;
+  let isCustomizing = battleRef.current.isCustomizing;
+  let enemy = battleRef.current.enemy;
+  let battleIsPaused = battleRef.current.battleIsPaused;
+
+  // Sprite
   let entity = spriteData[enemy.name];
   let sprite = entity.sprite;
 
