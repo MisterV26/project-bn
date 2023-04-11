@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import './style.css';
+import { BattleContext } from '../../scenes/Battle/Battle';
 
 interface Images {
     [key: string]: any;
@@ -13,11 +14,13 @@ interface Images {
 export const Sprite = ({...props}) => {
 
     const [frameIndex, setFrameIndex] = useState(0);
+    const {battleRef} = useContext(BattleContext);
 
     let sprite = props.spriteData.sprite;
     let sheet = images[sprite.sheet];
     let scale = 8.5;
 
+    let globalTicks = battleRef.current.ticks;
     let ticks = useRef(0);
     let frame = useRef(0);
     let incrementDirection = useRef(1);
@@ -56,11 +59,11 @@ export const Sprite = ({...props}) => {
     };
 
     useEffect(() => {
-        if(!props.battleIsPaused){
+        if(!battleRef.current.battleIsPaused){
             updateAnimation(8);
         }
         
-    }, [props.ticks]);
+    }, [globalTicks]);
 
     return (
         props &&

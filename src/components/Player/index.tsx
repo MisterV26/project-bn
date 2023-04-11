@@ -32,7 +32,7 @@ export const Player = () => {
         bottom: playerPosition.calculatePosition(player.position).y, 
         left: playerPosition.calculatePosition(player.position).x
       }}>
-        <Sprite spriteData={entity} state="idle" battleIsPaused={battleIsPaused}/>
+        <Sprite spriteData={entity} state="idle"/>
       </div>
     }
     </>

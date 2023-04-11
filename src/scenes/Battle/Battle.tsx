@@ -104,7 +104,7 @@ export const Battle = () => {
         }
         break;
       case "a":
-        if (customBarRef.current.full) {
+        if (customBarRef.current.full && !isCustomizingRef.current) {
           isCustomizingRef.current = true;
           togglePauseBattle();
           customBarRef.current.value = 0;

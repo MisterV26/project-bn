@@ -20,7 +20,7 @@ export const Enemy = () => {
   
   const {battleRef} = useContext(BattleContext);
   const {spriteData, setSpriteData} = useContext(SpriteDataContext);
-  
+
   let ticks = battleRef.current.ticks;
   let isCustomizing = battleRef.current.isCustomizing;
   let enemy = battleRef.current.enemy;
@@ -47,7 +47,7 @@ useEffect(() => {
         left: enemyPosition.calculatePosition(enemy.position).x
       }}>
         <div className="enemy_sprite">
-        <Sprite spriteData={entity} state="idle" animated="true" ticks={ticks} battleIsPaused={battleIsPaused}/>
+        <Sprite spriteData={entity} state="idle" animated="true" />
         <EnemyHpMeter {...enemy} />
         </div>
       </div>
