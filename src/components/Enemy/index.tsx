@@ -39,7 +39,7 @@ useEffect(() => {
     <>
     {
       <div 
-      className={`enemy ${isCustomizing ? "--standby" : "--active"}`} 
+      className={`enemy`} 
       style={{
         width: sprite.width,
         height: sprite.height,
@@ -48,7 +48,7 @@ useEffect(() => {
       }}>
         <div className="enemy_sprite">
         <Sprite spriteData={entity} state="idle" animated="true" />
-        <EnemyHpMeter {...enemy} />
+        
         </div>
       </div>
     }

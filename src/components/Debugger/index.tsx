@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
+import { IBattleProperties } from "../../Interfaces/IBattleProperties";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { IPlayer } from "../../Interfaces/IPlayer";
 import "./style.css";
@@ -12,8 +12,7 @@ export const Debugger = () => {
   
   let player = battleRef.current.player;
   let enemy = battleRef.current.enemy;
-  let customBar = battleRef.current.customBar;
-  let isCustomizing = battleRef.current.isCustomizing;
+  let battleProperties: IBattleProperties = battleRef.current.battleProperties;
 
   return (
     <div className="debugger">
@@ -37,9 +36,9 @@ export const Debugger = () => {
       )}
       <div className="debug misc">
         <p>Time: {battleRef.current.ticks}</p>
-        <p>Custom_bar: {customBar?.value?.toFixed(2)}</p>
-        <p>Full_status: {String(customBar?.full)}</p>
-        <p>Is customizing: {String(isCustomizing)}</p>
+        <p>Custom_bar: {battleProperties?.customBarValue?.toFixed(2)}</p>
+        <p>Full_status: {String(battleProperties?.customBarFull)}</p>
+        <p>Is customizing: {String(battleProperties.isCustomizing)}</p>
       </div>
     </div>
   );

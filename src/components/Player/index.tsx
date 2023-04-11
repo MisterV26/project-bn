@@ -27,7 +27,7 @@ export const Player = () => {
     <>
     {
       <div 
-      className={`player ${isCustomizing ? "--standby" : "--active"}`}  
+      className={`player`}  
       style={{
         bottom: playerPosition.calculatePosition(player.position).y, 
         left: playerPosition.calculatePosition(player.position).x

@@ -1,5 +1,6 @@
 {
     "megaman": {
+        "entityType": "player",
         "sprite" : {
             "width": 120,
             "height": 149,
@@ -16,6 +17,7 @@
     },
 
     "bass": {
+        "entityType": "enemy",
         "sprite" : {
             "width": 169,
             "height": 240,

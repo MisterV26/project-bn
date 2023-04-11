@@ -10,12 +10,13 @@ import { IEnemy } from "../../Interfaces/IEnemy";
 import { Enemy } from "../../components/Enemy";
 import { HpMeter } from "../../components/HpMeter";
 import { CustomBar } from "../../components/CustBar";
-import { ICustomizerBar } from "../../Interfaces/ICustomizerBar";
+import { IBattleProperties as IBattleProperties } from "../../Interfaces/IBattleProperties";
 import { StatusWindow } from "../../components/StatusWindow";
 import { CustomWindow } from "../../components/CustWindow";
 import { ISpriteDataContext } from "../../Interfaces/ISpriteDataContext";
 import { IBattleContext } from "../../Interfaces/IBattleContext";
 import { IBattle } from "../../Interfaces/IBattle";
+import { useJoypad } from "../../hooks/useJoypad";
 
 export const BattleContext = createContext({} as IBattleContext);
 export const StageContext = createContext({} as IPanelsContext);
@@ -26,9 +27,11 @@ const SpriteData = require("../../globals/SpriteData.json");
 export const Battle = () => {
   const [ticks, setTicks] = useState(0);
 
-  const [customBar, setCustomBar] = useState<ICustomizerBar>({
-    value: 1,
-    full: false,
+  const [battleProperties, setBattleProperties] = useState<IBattleProperties>({
+    customBarValue: 1,
+    customBarFull: false,
+    isCustomizing: false,
+    battleIsPaused: false
   });
   const [spriteData, setSpriteData] = useState(SpriteData);
   const [panels, setPanels] = useState<IPanel[]>([]);
@@ -47,20 +50,16 @@ export const Battle = () => {
     position: { x: 4, y: 1 },
   });
 
-  const battleIsPausedRef = useRef(false);
   const ticksRef = useRef(ticks);
   const playerRef = useRef(player);
   const enemyRef = useRef(enemy);
-  const customBarRef = useRef(customBar);
-  const isCustomizingRef = useRef(false);
+  const battlePropertiesRef = useRef(battleProperties);
 
   const battleRef = useRef({
-    battleIsPaused: battleIsPausedRef.current,
     ticks: ticksRef.current,
     player: playerRef.current,
     enemy: enemyRef.current,
-    customBar: customBarRef.current,
-    isCustomizing: isCustomizingRef.current
+    battleProperties: battlePropertiesRef.current,
   });
 
   // Updated whenever player ref state changes
@@ -68,83 +67,27 @@ export const Battle = () => {
   // Use ref to track conditionals.
   ticksRef.current = ticks;
   playerRef.current = player;
-  customBarRef.current = customBar;
+  battlePropertiesRef.current = battleProperties;
 
   battleRef.current = {
-    battleIsPaused: battleIsPausedRef.current,
     ticks: ticksRef.current,
     player: playerRef.current,
     enemy: enemyRef.current,
-    customBar: customBarRef.current,
-    isCustomizing: isCustomizingRef.current
+    battleProperties: battlePropertiesRef.current,
   };
 
-  const handleKeyPress = (event: any) => {
-    const key = event.key;
+  const joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});  
 
-    switch (key) {
-      case "ArrowRight":
-        if (ifCanMovePlayer() && playerRef.current.position.x < 2) {
-          playerRef.current.position.x += 1;
-        }
-        break;
-      case "ArrowLeft":
-        if (ifCanMovePlayer() && playerRef.current.position.x > 0) {
-          playerRef.current.position.x -= 1;
-        }
-        break;
-      case "ArrowUp":
-        if (ifCanMovePlayer() && playerRef.current.position.y > 0) {
-          playerRef.current.position.y -= 1;
-        }
-        break;
-      case "ArrowDown":
-        if (ifCanMovePlayer() && playerRef.current.position.y < 2) {
-          playerRef.current.position.y += 1;
-        }
-        break;
-      case "a":
-        if (customBarRef.current.full && !isCustomizingRef.current) {
-          isCustomizingRef.current = true;
-          togglePauseBattle();
-          customBarRef.current.value = 0;
-        }
-        break;
-      case "l":
-        isCustomizingRef.current = false;
-        togglePauseBattle();
-        customBarRef.current.full = false;
-        break;
 
-      case "Enter":
-        console.log(6);
-        if (!isCustomizingRef.current) {
-          togglePauseBattle();
-        }
-        break;
-      default:
-        break;
-    }
-  };
 
-  const ifCanMovePlayer = () => {
-    return player && !battleIsPausedRef.current;
-  };
 
-  const togglePauseBattle = (state?: boolean) => {
-    if (state) {
-      battleIsPausedRef.current = state;
-      return;
-    }
-    battleIsPausedRef.current = !battleIsPausedRef.current;
-  };
 
   const updateCustomBar = () => {
-    if (customBarRef.current.value >= 100) {
-      customBarRef.current.full = true;
+    if (battlePropertiesRef.current.customBarValue >= 100) {
+      battlePropertiesRef.current.customBarFull = true;
     }
-    if (!customBar.full && customBarRef.current.value < 100) {
-      customBarRef.current.value += 0.1;
+    if (!battleProperties.customBarFull && battlePropertiesRef.current.customBarValue < 100) {
+      battlePropertiesRef.current.customBarValue += 0.1;
     }
   };
 
@@ -152,11 +95,11 @@ export const Battle = () => {
     // Execute IF component successfully mounts.
     let frameId: any;
     // process input
-    window.addEventListener("keydown", handleKeyPress, false);
+    window.addEventListener("keydown", joypad.handleKeyPress, false);
     const frame = (time: any) => {
       // Update logic
       setTicks(time);
-      if (!battleIsPausedRef.current) {
+      if (!battleProperties.battleIsPaused) {
         updateCustomBar();
       }
       frameId = requestAnimationFrame(frame);
@@ -165,7 +108,7 @@ export const Battle = () => {
 
     // Cancel animation frame, right before component removed
     return () => {
-      window.removeEventListener("keydown", handleKeyPress, false);
+      window.removeEventListener("keydown", joypad.handleKeyPress, false);
       cancelAnimationFrame(frameId);
     };
   }, []);
@@ -177,19 +120,19 @@ export const Battle = () => {
         <Debugger />
         <CustomWindow />
         <div className="scene-header">
-          <div className={`window-margin ${isCustomizingRef.current ? "--open" : "--close"}`}></div>
+          <div className={`window-margin ${battlePropertiesRef.current.isCustomizing ? "--open" : "--close"}`}></div>
           <div className="player-status">
             <HpMeter {...playerRef.current} />
             <StatusWindow />
           </div>
-          {!isCustomizingRef.current && (
-            <CustomBar fillValue={customBarRef.current.value} />
+          {!battlePropertiesRef.current.isCustomizing && (
+            <CustomBar fillValue={battlePropertiesRef.current.customBarValue} />
           )}
         </div>
         <SpriteDataContext.Provider value={{ spriteData, setSpriteData }}>
           <Player />
           <Enemy />
-          <Stage isCustomizing={isCustomizingRef.current} />
+          <Stage isCustomizing={battlePropertiesRef.current.isCustomizing} />
         </SpriteDataContext.Provider>
       </div>
     </BattleContext.Provider>
