@@ -21,9 +21,6 @@ export const Player = ({player, isCustomizing}: Props) => {
   
   const playerPosition = usePosition(PLAYERWIDTH, PLAYERHEIGHT);
 
-useEffect(() => {
-}, []);
-
   return (
     <>
     {

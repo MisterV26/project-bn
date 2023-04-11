@@ -37,6 +37,10 @@ export const Battle = () => {
     status: "normal",
     position: { x: 1, y: 1 },
   });
+
+  const playerRef = useRef(player);
+  const customBarRef = useRef(custBar);
+
   const [enemy, setEnemy] = useState<IEnemy>({
     name: 'bass',
     hp: 1500,
@@ -44,40 +48,47 @@ export const Battle = () => {
     position: { x: 4, y: 1 },
   });
 
+  // Updated whenever player ref state changes
+  // You cannot use state to check conditionals because it is async.
+  // Use ref to track conditionals.
+  playerRef.current = player;
+  customBarRef.current = custBar;
+
+
   const handleKeyPress = (event: any) => {
     const key = event.key;
 
     if (player) {
       switch (key) {
         case "ArrowRight":
-          if (player.position.x < 2) {
+          if (playerRef.current.position.x < 2) {
             setPlayer((prev) => ({
               ...prev,
-              position: { x: prev.position.x++, y: prev.position.y },
+              position: { x: prev.position.x+=1, y: prev.position.y },
             }));
           }
           break;
         case "ArrowLeft":
-          if (player.position.x > 0) {
+          if (playerRef.current.position.x > 0) {
             setPlayer((prev) => ({
               ...prev,
-              position: { x: prev.position.x--, y: prev.position.y },
+              position: { x: prev.position.x-=1, y: prev.position.y },
             }));
           }
           break;
         case "ArrowUp":
-          if (player.position.y > 0) {
+          if (playerRef.current.position.y > 0) {
             setPlayer((prev) => ({
               ...prev,
-              position: { x: prev.position.x, y: prev.position.y-- },
+              position: { x: prev.position.x, y: prev.position.y-=1 },
             }));
           }
           break;
         case "ArrowDown":
-          if (player.position.y < 2) {
+          if (playerRef.current.position.y < 2) {
             setPlayer((prev) => ({
               ...prev,
-              position: { x: prev.position.x, y: prev.position.y++ },
+              position: { x: prev.position.x, y: prev.position.y+=1 },
             }));
           }
           break;
@@ -95,34 +106,41 @@ export const Battle = () => {
         default:
           break;
       }
+      console.log(playerRef.current.position)
     }
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      setTicks((prev) => prev+=1);
-    }, 10000/60);  
-  }, [ticks]);
-
-  useEffect(() => {
-    const updateCust = () => {
-      if (custBar.value >= 100) {
+  const updateCustomBar = () => {
+      if (customBarRef.current.value >= 100) {
         setCustBar((prev) => ({ ...prev, full: true }));
       }
-      if (!custBar.full && custBar.value < 100) {
-        setCustBar((prev) => ({ ...prev, value: prev.value + 0.2 }));
+      if (!custBar.full && customBarRef.current.value < 100) {
+        setCustBar((prev) => ({ ...prev, value: prev.value + 0.1 }));
       }
-    };
-    setTimeout(() => updateCust(), 1000 / 60);
-  }, [custBar.value, custBar.full]);
-
-  useEffect(() => {
+  };
+  
+  useEffect(()=>{
+    // Execute IF component successfully mounts.
+    let frameId: any;
+    // process input
     window.addEventListener("keydown", handleKeyPress, false);
+    const frame = (time: any) => {
+      
+      // Update logic
+      setTicks(time);
+      updateCustomBar();
+      frameId = requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+
+    // Cancel animation frame, right before component removed
     return () => {
       window.removeEventListener("keydown", handleKeyPress, false);
+      cancelAnimationFrame(frameId);
     };
-  }, [player.position, isCustomizing, custBar.full]);
+  }, []);
 
+  // render
   return (
     <StageContext.Provider value={{ panels, setPanels }}>
       <div className="battle">
