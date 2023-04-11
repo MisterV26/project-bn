@@ -12,18 +12,18 @@ interface Images {
 
 export const Sprite = ({...props}) => {
 
-    const [sIndex, setSIndex] = useState(0);
-    const [direction, setDirection] = useState(0);
+    const [frameIndex, setFrameIndex] = useState(0);
 
     let sprite = props.spriteData.sprite;
     let sheet = images[sprite.sheet];
     let scale = 8.5;
 
-    let inc = useRef(1);
-    let v = useRef(0);
+    let ticks = useRef(0);
+    let frame = useRef(0);
+    let incrementDirection = useRef(1);
 
     const getSprite = (sequence: string, animated:boolean = false) => {
-        let index = sIndex;
+        let index = frameIndex;
 
         if(!animated){ index = 0};
 
@@ -38,13 +38,28 @@ export const Sprite = ({...props}) => {
         return properties;
     };
 
-    useEffect(() => {
-        v.current += inc.current;
+    const loopAnimationIndex = () => {
+        frame.current += incrementDirection.current;
 
-        if(0 === v.current % (sprite[props.state].length - 1)){
-            inc.current *= -1;
+        if(0 === frame.current % (sprite[props.state].length - 1)){
+            incrementDirection.current *= -1;
         }
-        setSIndex(v.current);
+        setFrameIndex(frame.current);
+    }
+
+    const updateAnimation = (speed: number) => {
+        ticks.current += 1;
+        if(0 === ticks.current % speed){
+            ticks.current = 0;
+            loopAnimationIndex();
+        }
+    };
+
+    useEffect(() => {
+        if(!props.battleIsPaused){
+            updateAnimation(8);
+        }
+        
     }, [props.ticks]);
 
     return (

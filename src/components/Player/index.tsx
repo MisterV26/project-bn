@@ -11,9 +11,10 @@ const PLAYERHEIGHT = 100;
 interface Props {
   isCustomizing: boolean;
   player: IPlayer;
+  battleIsPaused: boolean;
 }
 
-export const Player = ({player, isCustomizing}: Props) => {
+export const Player = ({player, isCustomizing, battleIsPaused}: Props) => {
 
   const {spriteData, setSpriteData} = useContext(SpriteDataContext);
   let entity = spriteData['megaman'];
@@ -30,7 +31,7 @@ export const Player = ({player, isCustomizing}: Props) => {
         bottom: playerPosition.calculatePosition(player.position).y, 
         left: playerPosition.calculatePosition(player.position).x
       }}>
-        <Sprite spriteData={entity} state="idle" />
+        <Sprite spriteData={entity} state="idle" battleIsPaused={battleIsPaused}/>
       </div>
     }
     </>

@@ -13,9 +13,10 @@ interface Props {
   isCustomizing: boolean;
   enemy: IEnemy;
   ticks: number;
+  battleIsPaused: boolean;
 }
 
-export const Enemy = ({enemy, isCustomizing, ticks}: Props) => {
+export const Enemy = ({enemy, isCustomizing, ticks, battleIsPaused}: Props) => {
   
   const {spriteData, setSpriteData} = useContext(SpriteDataContext);
   let entity = spriteData[enemy.name];
@@ -38,7 +39,7 @@ useEffect(() => {
         left: enemyPosition.calculatePosition(enemy.position).x
       }}>
         <div className="enemy_sprite">
-        <Sprite spriteData={entity} state="idle" animated="true" ticks={ticks}/>
+        <Sprite spriteData={entity} state="idle" animated="true" ticks={ticks} battleIsPaused={battleIsPaused}/>
         <EnemyHpMeter {...enemy} />
         </div>
       </div>
