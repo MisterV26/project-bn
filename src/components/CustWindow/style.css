@@ -93,6 +93,7 @@
 }
 
 .list-chip-icon {
+    position: relative;
     width: 90%;
     height: 65%;
     background-color: #181818;
@@ -106,4 +107,19 @@
     background-color: #181818;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+.list-chip-cursor {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    bottom: -8px;
+    left: -5px;
+    border: 3px solid #fff;
+    border-radius: 4px;
+}
+
+.--hover {
+    display: block;
 }

@@ -39,10 +39,16 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
           if (ifCanMovePlayer() && player.position.x < 2) {
             player.position.x += 1;
           }
+          if(battleProperties.isCustomizing){
+            battleContext.current.cursorSlotPosition.x += 1;
+          }
           break;
         case "ArrowLeft":
           if (ifCanMovePlayer() && player.position.x > 0) {
             player.position.x -= 1;
+          }
+          if(battleProperties.isCustomizing){
+            battleContext.current.cursorSlotPosition.x -= 1;
           }
           break;
         case "ArrowUp":

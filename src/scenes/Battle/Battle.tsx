@@ -29,10 +29,11 @@ export const Battle = () => {
 
   const [battleProperties, setBattleProperties] = useState<IBattleProperties>({
     customBarValue: 1,
-    customBarFull: false,
-    isCustomizing: false,
-    battleIsPaused: false
+    customBarFull: true,
+    isCustomizing: true,
+    battleIsPaused: true
   });
+  
   const [spriteData, setSpriteData] = useState(SpriteData);
   const [panels, setPanels] = useState<IPanel[]>([]);
   const [battle, setBattle] = useState<IBattle>({} as IBattle);
@@ -55,6 +56,7 @@ export const Battle = () => {
   const playerRef = useRef(player);
   const enemyRef = useRef(enemy);
   const battlePropertiesRef = useRef(battleProperties);
+  const cursorSlotPosition = useRef({x: 0, y:0});
 
   const battleRef = useRef({
     ticks: ticksRef.current,
@@ -62,6 +64,7 @@ export const Battle = () => {
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
+    cursorSlotPosition: cursorSlotPosition.current
   });
 
   // Updated whenever player ref state changes
@@ -77,6 +80,7 @@ export const Battle = () => {
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
+    cursorSlotPosition: cursorSlotPosition.current
   };
 
   const joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});  
