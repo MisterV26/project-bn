@@ -114,6 +114,7 @@ export const Battle = () => {
 
   const placeCursorSlot = (x: number, y: number) => {
     if(!slotPositionExists(x,y)){ return; }
+    cursorSlotPositionRef.current = {x: x, y: y};
     let slots = slotsRef.current;
     resetCursorPosition();
     slots[y][x] = { ...slots[y][x], hover: true };
@@ -158,14 +159,16 @@ export const Battle = () => {
   };
 
   const slotPositionExists = (x: number, y: number) => {
+    if(typeof slotsRef.current[y] === 'undefined'){
+      return false;
+    }
     if(typeof slotsRef.current[y][x] === 'undefined'){
       return false;
     }
-    console.log(x,y)
     return true;
   };
 
-  const joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});
+  let joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});
 
   useEffect(() => {
     // Execute IF component successfully mounts.

@@ -17,8 +17,6 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
   let player = battleContext.current.player;
   let battleProperties: IBattleProperties =
     battleContext.current.battleProperties;
-  let battleActions = battleContext.current.battleActions;
-  let cursorPosition = battleContext.current.cursorSlotPosition;
 
   const ifCanMovePlayer = () => {
     return player && !battleProperties.battleIsPaused;
@@ -26,7 +24,7 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
 
   const togglePauseBattle = (state?: boolean) => {
     if (state) {
-        battleProperties.battleIsPaused = state;
+      battleProperties.battleIsPaused = state;
       return;
     }
     battleProperties.battleIsPaused = !battleProperties.battleIsPaused;
@@ -34,6 +32,8 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
 
   return {
     handleKeyPress: (event: any) => {
+      let cursorPosition = battleContext.current.cursorSlotPosition;
+      let battleActions = battleContext.current.battleActions;
       const key = event.key;
 
       switch (key) {
@@ -41,28 +41,32 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
           if (ifCanMovePlayer() && player.position.x < 2) {
             player.position.x += 1;
           }
-          if(battleProperties.isCustomizing){
-            console.log(battleContext.current)
-            battleContext.current.battleActions.moveCursor((cursorPosition.x + 1), cursorPosition.y)
-            //battleContext.current.cursorSlotPosition.x += 1;
+          if (battleProperties.isCustomizing) {
+            battleActions.moveCursor(cursorPosition.x + 1, cursorPosition.y);
           }
           break;
         case "ArrowLeft":
           if (ifCanMovePlayer() && player.position.x > 0) {
             player.position.x -= 1;
           }
-          if(battleProperties.isCustomizing){
-            battleContext.current.cursorSlotPosition.x -= 1;
+          if (battleProperties.isCustomizing) {
+            battleActions.moveCursor(cursorPosition.x - 1, cursorPosition.y);
           }
           break;
         case "ArrowUp":
           if (ifCanMovePlayer() && player.position.y > 0) {
             player.position.y -= 1;
           }
+          if (battleProperties.isCustomizing) {
+            battleActions.moveCursor(cursorPosition.x, cursorPosition.y - 1);
+          }
           break;
         case "ArrowDown":
           if (ifCanMovePlayer() && player.position.y < 2) {
             player.position.y += 1;
+          }
+          if (battleProperties.isCustomizing) {
+            battleActions.moveCursor(cursorPosition.x, cursorPosition.y + 1);
           }
           break;
         case "a":
