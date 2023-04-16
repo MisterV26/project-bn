@@ -13,6 +13,7 @@ export const CustomWindow = () => {
   let battleProperties: IBattleProperties = battleRef.current.battleProperties;
   let isCustomizing = battleProperties.isCustomizing;
 
+ 
   return (
     <div className={`custom-window-container ${isCustomizing ? "--open" : "--close"}`}>
         <div className="custom-window-col cw-col-1">

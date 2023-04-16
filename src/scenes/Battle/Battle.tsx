@@ -17,6 +17,7 @@ import { ISpriteDataContext } from "../../Interfaces/ISpriteDataContext";
 import { IBattleContext } from "../../Interfaces/IBattleContext";
 import { IBattle } from "../../Interfaces/IBattle";
 import { useJoypad } from "../../hooks/useJoypad";
+import { ISlot } from "../../Interfaces/ISlot";
 
 export const BattleContext = createContext({} as IBattleContext);
 export const StageContext = createContext({} as IPanelsContext);
@@ -51,12 +52,15 @@ export const Battle = () => {
     position: { x: 4, y: 1 },
   });
 
+  // Mutate only reference directly
   const ticksRef = useRef(ticks);
   const timeStampRef = useRef("00:00:00");
   const playerRef = useRef(player);
   const enemyRef = useRef(enemy);
   const battlePropertiesRef = useRef(battleProperties);
-  const cursorSlotPosition = useRef({x: 0, y:0});
+  const battleActionsRef = useRef({});
+  const cursorSlotPositionRef = useRef({x: 0, y:0});
+  const slotsRef = useRef<ISlot[][]>([]);
 
   const battleRef = useRef({
     ticks: ticksRef.current,
@@ -64,7 +68,9 @@ export const Battle = () => {
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
-    cursorSlotPosition: cursorSlotPosition.current
+    battleActions: battleActionsRef.current,
+    cursorSlotPosition: cursorSlotPositionRef.current,
+    slots: slotsRef.current
   });
 
   // Updated whenever player ref state changes
@@ -80,12 +86,10 @@ export const Battle = () => {
     player: playerRef.current,
     enemy: enemyRef.current,
     battleProperties: battlePropertiesRef.current,
-    cursorSlotPosition: cursorSlotPosition.current
+    battleActions: battleActionsRef.current,
+    cursorSlotPosition: cursorSlotPositionRef.current,
+    slots: slotsRef.current
   };
-
-  const joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});  
-
-
 
   const updateTime = (s: any) => {
     let ms = s % 1000;
@@ -108,11 +112,72 @@ export const Battle = () => {
     }
   };
 
+  const placeCursorSlot = (x: number, y: number) => {
+    if(!slotPositionExists(x,y)){ return; }
+    let slots = slotsRef.current;
+    resetCursorPosition();
+    slots[y][x] = { ...slots[y][x], hover: true };
+  };
+
+  const setupSlots = async () => {
+    const ROWS = 2;
+    const COLUMNS = 5;
+
+    let index = 0;
+    let slotsToBeSet: ISlot[][] = [];
+    let slot: ISlot;
+
+    for (let row = 0; row < ROWS; row++) {
+      for (let col = 0; col < COLUMNS; col++) {
+        if (index < 8) {
+          slot = {
+            id: index,
+            position: { x: col, y: row },
+            hover: false,
+          };
+          if (!slotsToBeSet[row]) {
+            slotsToBeSet[row] = [];
+          }
+          slotsToBeSet[row][col] = slot;
+          index++;
+        }
+      }
+    }
+    slotsRef.current = slotsToBeSet;
+    battleActionsRef.current = {...battleActionsRef, moveCursor: placeCursorSlot}
+    placeCursorSlot(0,0);
+  };
+
+  const resetCursorPosition = () => {
+    let slots = battleRef.current.slots;
+    slots.map((row) => {
+      row.map((slot) => {
+        slot.hover = false;
+      });
+    });
+  };
+
+  const slotPositionExists = (x: number, y: number) => {
+    if(typeof slotsRef.current[y][x] === 'undefined'){
+      return false;
+    }
+    console.log(x,y)
+    return true;
+  };
+
+  const joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});
+
   useEffect(() => {
     // Execute IF component successfully mounts.
     let frameId: any;
     // process input
     window.addEventListener("keydown", joypad.handleKeyPress, false);
+
+    let setupAsync = async() => {
+      await setupSlots();
+    };
+
+    setupAsync();
     
     const frame = (time: any) => {
       // Update logic

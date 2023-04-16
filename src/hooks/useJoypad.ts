@@ -17,6 +17,8 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
   let player = battleContext.current.player;
   let battleProperties: IBattleProperties =
     battleContext.current.battleProperties;
+  let battleActions = battleContext.current.battleActions;
+  let cursorPosition = battleContext.current.cursorSlotPosition;
 
   const ifCanMovePlayer = () => {
     return player && !battleProperties.battleIsPaused;
@@ -40,7 +42,9 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
             player.position.x += 1;
           }
           if(battleProperties.isCustomizing){
-            battleContext.current.cursorSlotPosition.x += 1;
+            console.log(battleContext.current)
+            battleContext.current.battleActions.moveCursor((cursorPosition.x + 1), cursorPosition.y)
+            //battleContext.current.cursorSlotPosition.x += 1;
           }
           break;
         case "ArrowLeft":

@@ -39,7 +39,8 @@ export const Debugger = () => {
         <p>Time: {battleRef.current.timeStamp}</p>
         <p>Custom_bar: {battleProperties?.customBarValue?.toFixed(2)}</p>
         <p>Full_status: {String(battleProperties?.customBarFull)}</p>
-        <p>Is customizing: {String(battleProperties.isCustomizing)}</p>
+        <p>Is_customizing: {String(battleProperties.isCustomizing)}</p>
+        <p>Chip_Slots: {String(battleRef.current.slots.length)}</p>
       </div>
     </div>
   );
