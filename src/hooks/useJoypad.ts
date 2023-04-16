@@ -82,6 +82,7 @@ export const useJoypad = ({ battleContext, battle, setBattle }: Props) => {
         case "l":
           battleProperties.isCustomizing = false;
           battleProperties.customBarFull = false;
+          battleActions.moveCursor(0,0);
           togglePauseBattle();
           break;
 

@@ -116,7 +116,7 @@ export const Battle = () => {
     if(!slotPositionExists(x,y)){ return; }
     cursorSlotPositionRef.current = {x: x, y: y};
     let slots = slotsRef.current;
-    resetCursorPosition();
+    resetCursorRender();
     slots[y][x] = { ...slots[y][x], hover: true };
   };
 
@@ -145,12 +145,15 @@ export const Battle = () => {
       }
     }
     slotsRef.current = slotsToBeSet;
-    battleActionsRef.current = {...battleActionsRef, moveCursor: placeCursorSlot}
+    battleActionsRef.current = {
+      ...battleActionsRef, 
+      moveCursor: placeCursorSlot
+    };
     placeCursorSlot(0,0);
   };
 
-  const resetCursorPosition = () => {
-    let slots = battleRef.current.slots;
+  const resetCursorRender = () => {
+    let slots = slotsRef.current;
     slots.map((row) => {
       row.map((slot) => {
         slot.hover = false;
