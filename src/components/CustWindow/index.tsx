@@ -5,6 +5,7 @@ import { ChipWindow } from './ChipWindow';
 import './style.css';
 import { BattleContext } from '../../scenes/Battle/Battle';
 import { IBattleProperties } from '../../Interfaces/IBattleProperties';
+import { OkButton } from './OkButton';
 
 export const CustomWindow = () => {
 
@@ -22,6 +23,7 @@ export const CustomWindow = () => {
         </div>
         <div className="custom-window-col cw-col-2">
             <ChipSelection />
+            <OkButton />
         </div>
     </div>
   )

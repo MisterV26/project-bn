@@ -1,3 +1,8 @@
+@font-face {
+    font-family: mmbn;
+    src: url(../../globals/Mega-Man-Battle-Network.ttf);
+  }
+
 .debugger {
     display: flex;
     flex-direction: row;
@@ -6,6 +11,8 @@
     width: 35%;
     position: absolute;
     right: 0;
+    font-family: mmbn;
+    font-size: 7pt;
 }
 
 .debug {
