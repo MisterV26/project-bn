@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { ChipSlots } from './ChipSlots';
+import { ChipSelect } from './ChipSelect';
 import { ChipSelection } from './ChipSelection';
 import { ChipWindow } from './ChipWindow';
 import './style.css';
@@ -19,7 +19,7 @@ export const CustomWindow = () => {
     <div className={`custom-window-container ${isCustomizing ? "--open" : "--close"}`}>
         <div className="custom-window-col cw-col-1">
             <ChipWindow />
-            <ChipSlots />
+            <ChipSelect />
         </div>
         <div className="custom-window-col cw-col-2">
             <ChipSelection />
