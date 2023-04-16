@@ -1,21 +1,9 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { BattleContext } from "../../scenes/Battle/Battle";
+import { IChip } from "../../Interfaces/IChip";
+import { ISlot } from "../../Interfaces/ISlot";
 
-interface ISlot {
-  [key: number]: string | number;
-  id?: number;
-  hover?: boolean;
-  chip?: IChip;
-  position?: { x: number; y: number };
-}
-
-interface IChip {
-  id?: string;
-  name?: string;
-  code?: string;
-}
-
-export const ChipList = () => {
+export const ChipSlots = () => {
   const {battleRef} = useContext(BattleContext);
 
   let cursorPosition = battleRef.current.cursorSlotPosition;
@@ -30,7 +18,6 @@ export const ChipList = () => {
 
     let index = 0;
     let slotsToBeSet: ISlot[][] = [];
-
     let slot: ISlot;
 
     for (let row = 0; row < ROWS; row++) {
@@ -52,7 +39,7 @@ export const ChipList = () => {
     return slotsToBeSet;
   };
 
-  const resetCursor = () => {
+  const resetCursorPosition = () => {
     slots.current.map((row) => {
       row.map((slot) => {
         slot.hover = false;
@@ -60,9 +47,9 @@ export const ChipList = () => {
     })
   }
 
-  const cursorSlot = (x: number, y:number) => {
+  const placeCursorSlot = (x: number, y:number) => {
   
-    resetCursor();
+    resetCursorPosition();
     slots.current[y][x] = {...slots.current[y][x], hover:true};
   };
 
@@ -70,10 +57,10 @@ export const ChipList = () => {
     const setup = async () => {
       let initialSlots = await setupSlots();
       slots.current = initialSlots;
-      cursorSlot(cursorPosition.x, cursorPosition.y);
+      placeCursorSlot(0, 0);
     };
     setup();
-  }, [cursorPosition.x]);
+  }, []);
 
   return (
     <div className="chip-list-container">
