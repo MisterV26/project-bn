@@ -18,6 +18,8 @@ import { IBattleContext } from "../../Interfaces/IBattleContext";
 import { IBattle } from "../../Interfaces/IBattle";
 import { useJoypad } from "../../hooks/useJoypad";
 import { ISlot } from "../../Interfaces/ISlot";
+import { IChip } from "../../Interfaces/IChip";
+import Chips from "../../objects/chips/Chips";
 
 export const BattleContext = createContext({} as IBattleContext);
 export const StageContext = createContext({} as IPanelsContext);
@@ -61,6 +63,7 @@ export const Battle = () => {
   const battleActionsRef = useRef({});
   const cursorSlotPositionRef = useRef({x: 0, y:0});
   const slotsRef = useRef<ISlot[][]>([]);
+  const chipsRef = useRef<IChip[]>([]);
 
   const battleRef = useRef({
     ticks: ticksRef.current,
@@ -70,7 +73,8 @@ export const Battle = () => {
     battleProperties: battlePropertiesRef.current,
     battleActions: battleActionsRef.current,
     cursorSlotPosition: cursorSlotPositionRef.current,
-    slots: slotsRef.current
+    slots: slotsRef.current,
+    chips: chipsRef.current
   });
 
   // Updated whenever player ref state changes
@@ -88,7 +92,8 @@ export const Battle = () => {
     battleProperties: battlePropertiesRef.current,
     battleActions: battleActionsRef.current,
     cursorSlotPosition: cursorSlotPositionRef.current,
-    slots: slotsRef.current
+    slots: slotsRef.current,
+    chips: chipsRef.current
   };
 
   const updateTime = (s: any) => {
@@ -135,6 +140,7 @@ export const Battle = () => {
             id: index,
             position: { x: col, y: row },
             hover: false,
+            chip:chipsRef.current[index]
           };
           if (!slotsToBeSet[row]) {
             slotsToBeSet[row] = [];
@@ -171,6 +177,16 @@ export const Battle = () => {
     return true;
   };
 
+  const setUpChips = async () => {
+
+    const chips: IChip[] = [
+      Chips.cannon,
+      Chips.cannon
+    ]; 
+
+    chipsRef.current = chips;
+  }
+
   let joypad = useJoypad({battleContext: battleRef, battle: battle, setBattle: setBattle});
 
   useEffect(() => {
@@ -180,6 +196,7 @@ export const Battle = () => {
     window.addEventListener("keydown", joypad.handleKeyPress, false);
 
     let setupAsync = async() => {
+      await setUpChips();
       await setupSlots();
     };
 

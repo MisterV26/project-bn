@@ -178,8 +178,11 @@
 
 .list-chip-letter {
     width: 90%;
+    height: 25%;
     background-color: #181818;
     font-family: mmbn;
+    font-size: 8pt;
+    line-height: 25px;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }

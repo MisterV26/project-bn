@@ -1,5 +1,5 @@
 export interface IChip {
-    id?: string;
+    id?: number;
     name?: string;
     code?: string;
   }

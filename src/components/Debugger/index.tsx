@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { IBattleProperties } from "../../Interfaces/IBattleProperties";
 import { IEnemy } from "../../Interfaces/IEnemy";
 import { IPlayer } from "../../Interfaces/IPlayer";
@@ -13,6 +13,10 @@ export const Debugger = () => {
   let player = battleRef.current.player;
   let enemy = battleRef.current.enemy;
   let battleProperties: IBattleProperties = battleRef.current.battleProperties;
+
+  useEffect(()=>{
+    console.log(battleRef)
+  }, [battleRef.current.chips]);
 
   return (
     <div className="debugger">
